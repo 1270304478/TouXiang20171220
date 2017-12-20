@@ -172,7 +172,65 @@ public class MainActivity extends Activity {
 
         File img2 = new File(getRealPathFromURI(uri_picture.fromFile(picture)));//接口为file时调用
 
+        getVolley(img2);//xUtils方式
+        getAsync(img2);//async方式
+    }
 
+    private void getAsync(File img2) {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("uid", "450894");
+        try {
+            //params.put("uimg", img);//接口为字符串时
+            params.put("uimg", img2);//接口为file时
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        client.post(url_postHeadImage, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+            }
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+    private void getVolley(File img2) {
+        RequestParams params = new RequestParams();
+        // 将图片设置到参数中
+     /* //  com.lidroid.xutils.http.RequestParams params = new com.lidroid.xutils.http.RequestParams();
+        params.addBodyParameter("uid", "450894");
+        params.addBodyParameter("uimg", img2);
+        // 2、上传文件
+        HttpUtils httpUtils = new HttpUtils();
+        httpUtils.send(HttpRequest.HttpMethod.POST,
+                url_postHeadImage, params,
+                new RequestCallBack<String>() {
+                    @Override
+                    public void onStart() {
+                        System.out.println("开始请求");
+                    }
+                    @Override
+                    public void onLoading(long total, long current,
+                                          boolean isUploading) {
+                        System.out.println("正在加载：共" + total + "个字节，当前："
+                                + current);
+                    }
+                    @Override
+                    public void onSuccess(
+                            ResponseInfo<String> objectResponseInfo) {
+                        System.out.println("上传成功");
+                        System.out.println(objectResponseInfo.result);
+                        Toast.makeText(MainActivity.this, "上传成功" + "\r\n" + "objectResponseInfo.result", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onFailure(com.lidroid.xutils.exception.HttpException e, String s) {
+                        System.out.println("上传失败");
+                        Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                    }
+                });*/
     }
     //接口为file时调用该方法
     private String getRealPathFromURI(Uri contentURI) {
@@ -188,7 +246,4 @@ public class MainActivity extends Activity {
         }
         return result;
     }
-
-
-
 }
